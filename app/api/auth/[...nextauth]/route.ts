@@ -36,14 +36,20 @@ export const authOptions: NextAuthOptions = {
   },
   session: {
     strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   callbacks: {
     async redirect({ url, baseUrl }) {
-      // Allows relative callback URLs
-      if (url.startsWith("/")) return `${baseUrl}${url}`;
-      // Allows callback URLs on the same origin
-      else if (new URL(url).origin === baseUrl) return url;
-      return baseUrl;
+      // If the URL starts with /, it's a relative path - use it
+      if (url.startsWith("/")) {
+        return `${baseUrl}${url}`;
+      }
+      // If the URL is from the same origin, allow it
+      if (new URL(url).origin === baseUrl) {
+        return url;
+      }
+      // Default to dashboard
+      return `${baseUrl}/dashboard`;
     },
     async jwt({ token, user }) {
       if (user) {

@@ -3,20 +3,22 @@ import { NextResponse } from "next/server";
 
 export const middleware = withAuth(
   function middleware(req) {
-    // Check if user is authenticated
-    if (!req.nextauth.token) {
-      return NextResponse.redirect(new URL("/login", req.url));
-    }
     return NextResponse.next();
   },
   {
     callbacks: {
-      authorized: ({ token }) => !!token,
+      authorized: ({ token }) => {
+        // Allow access if token exists
+        return !!token;
+      },
     },
-  },
+    pages: {
+      signIn: "/login",
+    },
+  }
 );
 
 // Protect the dashboard and api routes
 export const config = {
-  matcher: ["/dashboard/:path*", "/api/protected/:path*"],
+  matcher: ["/dashboard/:path*"],
 };
