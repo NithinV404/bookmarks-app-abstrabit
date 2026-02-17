@@ -8,7 +8,7 @@ function LoginContent() {
     const searchParams = useSearchParams();
     const [isLoading, setIsLoading] = useState(false);
 
-    const callbackUrl = searchParams.get("callbackUrl") || "/";
+    const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
 
     const handleGoogleSignIn = async () => {
         setIsLoading(true);

@@ -4,9 +4,10 @@ import Image from "next/image";
 import AddBookmarkForm from "../components/AddBookmarkForm";
 import BookmarksList from "../components/BookmarksList";
 import SignOutButton from "../components/SignOutButton";
+import { authOptions } from "../api/auth/[...nextauth]/route";
 
 export default async function Dashboard() {
-    const session = await getServerSession();
+    const session = await getServerSession(authOptions);
 
     if (!session) {
         redirect("/login");
